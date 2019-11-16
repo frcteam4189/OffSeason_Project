@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import frc.robot.Gains;
 import frc.robot.Robot;
+import frc.robot.commands.TurnToAngle;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
@@ -70,7 +71,7 @@ public class DriveTrain extends Subsystem implements PIDOutput{
   }
   public void dashData() {
     SmartDashboard.putNumber("Gyro Angle", ahrs.getAngle());
-    
+    SmartDashboard.putData("TurnToAngle", new TurnToAngle(90));
   }
 
   @Override
