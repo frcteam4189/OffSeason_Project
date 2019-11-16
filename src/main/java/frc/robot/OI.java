@@ -19,8 +19,8 @@ import frc.robot.commands.TurnToAngle;
  */
 public class OI {
 
-  public Joystick leftStick = new Joystick(0);
-  public Joystick rightStick = new Joystick(1);
+  public Joystick leftStick = new Joystick(RobotMap.leftStickPort);
+  public Joystick rightStick = new Joystick(RobotMap.rightStickPort);
   public Button turn = new JoystickButton(leftStick, 1);
 
   public OI(){
