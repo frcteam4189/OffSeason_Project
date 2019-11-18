@@ -49,7 +49,7 @@ public class DriveTrain extends Subsystem implements PIDOutput{
     leftFollower.follow(leftMaster);
     rightFollower.follow(rightMaster);
 
-    turnController = new PIDController(Gains.kPBryan, Gains.kIReese, Gains.kDBryan, ahrs, this);
+    turnController = new PIDController(Gains.kPAustin, Gains.kIReese, Gains.kDBryan, ahrs, this);
     turnController.setInputRange(-180.0f, 180.0f);
     turnController.setOutputRange(-.3, .3);
     turnController.setAbsoluteTolerance(3.0f);
@@ -59,7 +59,7 @@ public class DriveTrain extends Subsystem implements PIDOutput{
   public void rotateDegrees(double angle){
     ahrs.reset();
     turnController.reset();
-    turnController.setPID(Gains.kPBryan, Gains.kIReese, Gains.kDBryan);
+    turnController.setPID(Gains.kPAustin, Gains.kIReese, Gains.kDBryan);
     turnController.setSetpoint(angle);
     turnController.enable();
   }
