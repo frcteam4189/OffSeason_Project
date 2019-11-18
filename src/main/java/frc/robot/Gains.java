@@ -11,8 +11,8 @@ package frc.robot;
  * Add your docs here.
  */
 public class Gains {
-    public static double kP = 5.0;
-    public static double kI = 0.0;
-    public static double kD = 0.0;
+    public static double kPAustin = 5.0;
+    public static double kIReese = 0.0;
+    public static double kDBryan = 0.0;
     
 }
