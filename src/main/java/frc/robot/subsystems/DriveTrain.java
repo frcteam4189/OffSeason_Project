@@ -13,11 +13,9 @@ import frc.robot.Gains;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.DriveWithJoySticks;
-import frc.robot.commands.TurnToAngle;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -57,7 +55,7 @@ public class DriveTrain extends Subsystem implements PIDOutput{
     SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftMaster, leftFollower);
     SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightMaster, rightFollower);
 
-    turnController = new PIDController(Gains.kPAustin, Gains.kIReese, Gains.kDBryan, ahrs, this);
+    turnController = new PIDController(Gains.kP, Gains.kI, Gains.kD, ahrs, this);
     turnController.setInputRange(-180.0f, 180.0f);
     turnController.setOutputRange(-.6, .6);
     turnController.setAbsoluteTolerance(3.0f);
@@ -68,7 +66,7 @@ public class DriveTrain extends Subsystem implements PIDOutput{
   public void rotateDegrees(double angle){
     ahrs.reset();
     turnController.reset();
-    turnController.setPID(Gains.kPAustin, Gains.kIReese, Gains.kDBryan);
+    turnController.setPID(Gains.kP, Gains.kI, Gains.kD);
     turnController.setSetpoint(angle);
     turnController.enable();
   }
@@ -78,9 +76,10 @@ public class DriveTrain extends Subsystem implements PIDOutput{
     chasisDrive.tankDrive(leftSpeed, rightSpeed);
 
   }
-  public void dashData() {
+  public void outputIntel() {
     SmartDashboard.putNumber("Gyro Angle", ahrs.getAngle());
-    SmartDashboard.putData("TurnToAngle", new TurnToAngle(90));
+    SmartDashboard.putString("Drive Train", Robot.driveTrain.getSubsystem());
+    SmartDashboard.putNumber("Accel Z", ahrs.getRawAccelZ());
   }
 
   @Override

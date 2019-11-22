@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", new DriveWithJoySticks());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
-    driveTrain.dashData();
+    driveTrain.outputIntel();
     driveTrain.ahrs.reset();
   }
 
@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    driveTrain.dashData();
+    driveTrain.outputIntel();
   }
 
   /**
@@ -120,7 +120,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    driveTrain.dashData();
+    driveTrain.outputIntel();
   }
 
   /**
@@ -129,7 +129,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    driveTrain.dashData();
+    driveTrain.outputIntel();
   }
 
   /**

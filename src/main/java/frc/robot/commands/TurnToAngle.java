@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class TurnToAngle extends Command {
@@ -63,6 +64,10 @@ public class TurnToAngle extends Command {
     end();
   }
 
+  public void outputIntel(){
+    SmartDashboard.putBoolean("Running PID?", isFinished);
+    SmartDashboard.putData("Turn To Angle", new TurnToAngle(90));
+  }
 
 
 }
