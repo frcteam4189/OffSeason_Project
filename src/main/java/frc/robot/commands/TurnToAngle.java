@@ -15,7 +15,7 @@ public class TurnToAngle extends Command {
   double Angle;
   boolean isFinished = false;
   boolean inErrorZone = false;
-  int count;
+  public int count;
 
   public TurnToAngle(double angle) {
     requires(Robot.driveTrain);
@@ -36,6 +36,7 @@ public class TurnToAngle extends Command {
     if(inErrorZone){
       count++;
       isFinished = count >= 5;
+      System.out.print(count);
     }
     else{
       count = 0;

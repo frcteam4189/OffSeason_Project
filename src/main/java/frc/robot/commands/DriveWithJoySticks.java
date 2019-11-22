@@ -26,9 +26,9 @@ public class DriveWithJoySticks extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double left = -Robot.oi.leftStick.getY();
+    double left = Robot.oi.leftStick.getY();
     double right = Robot.oi.rightStick.getY();
-    Robot.driveTrain.setSpeed(left, right);;
+    Robot.driveTrain.setSpeed(left, right);
   }
 
   // Make this return true when this Command no longer needs to run execute()

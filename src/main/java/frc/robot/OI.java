@@ -24,7 +24,7 @@ public class OI {
   public Button turn = new JoystickButton(leftStick, 1);
 
   public OI(){
-    turn.toggleWhenPressed(new TurnToAngle(90));
+    turn.whenPressed(new TurnToAngle(90));
 
   }
 }

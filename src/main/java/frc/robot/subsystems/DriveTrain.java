@@ -12,10 +12,13 @@ import com.kauailabs.navx.frc.AHRS;
 import frc.robot.Gains;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.commands.DriveWithJoySticks;
 import frc.robot.commands.TurnToAngle;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,6 +34,7 @@ public class DriveTrain extends Subsystem implements PIDOutput{
   public WPI_TalonSRX leftFollower;
   public WPI_TalonSRX rightFollower;
   public final AHRS ahrs;
+  public DifferentialDrive chasisDrive;
 
   public final PIDController turnController;
 
@@ -47,14 +51,18 @@ public class DriveTrain extends Subsystem implements PIDOutput{
     Robot.initTalon(leftFollower);
     Robot.initTalon(rightFollower);
     
-    leftFollower.follow(leftMaster);
-    rightFollower.follow(rightMaster);
+    // leftFollower.follow(leftMaster);
+    // rightFollower.follow(rightMaster);
+
+    SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftMaster, leftFollower);
+    SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightMaster, rightFollower);
 
     turnController = new PIDController(Gains.kPAustin, Gains.kIReese, Gains.kDBryan, ahrs, this);
     turnController.setInputRange(-180.0f, 180.0f);
-    turnController.setOutputRange(-.3, .3);
+    turnController.setOutputRange(-.6, .6);
     turnController.setAbsoluteTolerance(3.0f);
     turnController.setContinuous();
+    chasisDrive = new DifferentialDrive(leftGroup, rightGroup);
   }  
 
   public void rotateDegrees(double angle){
@@ -64,9 +72,10 @@ public class DriveTrain extends Subsystem implements PIDOutput{
     turnController.setSetpoint(angle);
     turnController.enable();
   }
-  DifferentialDrive drive = new DifferentialDrive(leftMaster, rightMaster);
+  
+  
   public void setSpeed(double leftSpeed, double rightSpeed){
-    drive.tankDrive(leftSpeed, rightSpeed);
+    chasisDrive.tankDrive(leftSpeed, rightSpeed);
 
   }
   public void dashData() {
@@ -77,7 +86,7 @@ public class DriveTrain extends Subsystem implements PIDOutput{
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new DriveWithJoySticks());
   }
 
   @Override
