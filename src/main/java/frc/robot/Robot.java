@@ -89,7 +89,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_chooser.getSelected();
-
+    
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -145,6 +145,6 @@ public class Robot extends TimedRobot {
     motor.setSensorPhase(false);
     motor.configNominalOutputForward(0.0);
     motor.configNominalOutputReverse(0.0);
-    motor.configClosedloopRamp(1);
+    motor.configClosedloopRamp(.5);
   }
 }

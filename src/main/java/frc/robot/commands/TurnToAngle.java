@@ -33,11 +33,12 @@ public class TurnToAngle extends Command {
   @Override
   protected void execute() {
     double error = Robot.driveTrain.turnController.getError();
-    inErrorZone = Math.abs(error) < 3;
+    inErrorZone = Math.abs(error) < .25;
     if(inErrorZone){
+      //isFinished = true;
       count++;
-      isFinished = count >= 5;
-      System.out.print(count);
+      isFinished = count >= 3;
+      //System.out.print(count);
     }
     else{
       count = 0;
