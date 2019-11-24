@@ -5,14 +5,11 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
+package frc.robot.auto;
 
 /**
  * Add your docs here.
  */
-public class PathFollowingConstants {
-    public static final double kWheelDiameter = 0.0;
-    public static final double kMaxVelocity = 0.0;
-    public static final double kTicksPerRev = 0.0;
-    public static final String pathName = "Auto";
+public class AutoPaths {
+    
 }

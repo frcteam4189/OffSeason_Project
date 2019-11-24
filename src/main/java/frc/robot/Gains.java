@@ -7,9 +7,6 @@
 
 package frc.robot;
 
-/**
- * Add your docs here.
- */
 public class Gains {
     public static double kP = -0.105;
     public static double kI = 0.0;

@@ -12,16 +12,11 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.TurnToAngle;
 
-
-/**
- * This class is the glue that binds the controls on the physical operator
- * interface to the commands and command groups that allow control of the robot.
- */
 public class OI {
 
-  public Joystick leftStick = new Joystick(RobotMap.leftStickPort);
-  public Joystick rightStick = new Joystick(RobotMap.rightStickPort);
-  public Button turn = new JoystickButton(leftStick, 1);
+  public Joystick leftStick = new Joystick(Constants.kLeftStickPort);
+  public Joystick rightStick = new Joystick(Constants.kRightStickPort);
+  public Button turn = new JoystickButton(leftStick, Constants.kTurnToAngle);
 
   public OI(){
     turn.whenPressed(new TurnToAngle(90));

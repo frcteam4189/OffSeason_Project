@@ -23,13 +23,11 @@ public class TurnToAngle extends Command {
     Angle = angle;
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     Robot.driveTrain.rotateDegrees(Angle);
   }
 
-  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     double error = Robot.driveTrain.turnController.getError();
@@ -43,23 +41,18 @@ public class TurnToAngle extends Command {
     else{
       count = 0;
     }
-
   }
 
-  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     return isFinished;
   }
 
-  // Called once after isFinished returns true
   @Override
   protected void end() {
     Robot.driveTrain.turnController.disable();
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
     end();
@@ -69,6 +62,5 @@ public class TurnToAngle extends Command {
     SmartDashboard.putBoolean("Running PID?", isFinished);
     SmartDashboard.putData("Turn To Angle", new TurnToAngle(90));
   }
-
 
 }
