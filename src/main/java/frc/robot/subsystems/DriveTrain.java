@@ -25,8 +25,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
-
 public class DriveTrain extends Subsystem implements PIDOutput{
   public WPI_TalonSRX driveLeftMaster;
   public WPI_TalonSRX driveRightMaster;
@@ -42,8 +40,16 @@ public class DriveTrain extends Subsystem implements PIDOutput{
   public SpeedControllerGroup driveLeftGroup;
   public SpeedControllerGroup driveRightGroup;
   
-
   public final PIDController turnController;
+  
+  // DriveState state = DriveState.TELE_DRIVE;
+  // public enum DriveState{
+  //   TELE_DRIVE,
+  //   PATH_FOLLOWING,
+  //   STOPPED,
+  //   TURNING,
+  //   AUTON_DRIVE
+  // }
 
   public DriveTrain(){
     driveLeftMaster = new WPI_TalonSRX(Constants.kDriveLeftMasterID);
@@ -68,7 +74,7 @@ public class DriveTrain extends Subsystem implements PIDOutput{
 
     turnController = new PIDController(Gains.kP, Gains.kI, Gains.kD, ahrs, this);
     turnController.setInputRange(-180.0f, 180.0f);
-    turnController.setOutputRange(-.7, .7);
+    turnController.setOutputRange(-.9, .9);
     turnController.setAbsoluteTolerance(0.25f);
     turnController.setContinuous();
     chasisDrive = new DifferentialDrive(driveLeftGroup, driveRightGroup);

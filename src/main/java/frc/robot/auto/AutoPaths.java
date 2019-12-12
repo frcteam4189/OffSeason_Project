@@ -11,5 +11,6 @@ package frc.robot.auto;
  * Add your docs here.
  */
 public class AutoPaths {
-    
+    //create paths using waypoints
+    //possibly use Translation2d and trajectory generation
 }
