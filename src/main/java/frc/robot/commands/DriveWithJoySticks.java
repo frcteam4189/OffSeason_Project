@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
@@ -26,6 +27,9 @@ public class DriveWithJoySticks extends Command {
     double left = Robot.oi.leftStick.getY();
     double right = Robot.oi.rightStick.getY();
     Robot.driveTrain.setSpeed(left, right);
+    // double yAxis = Robot.oi.driveController.getY(Hand.kLeft);
+    // double xAxis = Robot.oi.driveController.getX(Hand.kRight);
+    // Robot.driveTrain.setSpeed(yAxis, xAxis);
   }
 
   @Override

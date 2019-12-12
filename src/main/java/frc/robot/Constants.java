@@ -11,6 +11,7 @@ public class Constants {
   /////////// JoyStick Ports ////////////
   public static int kLeftStickPort = 0;
   public static int kRightStickPort = 1;
+  public static int kDriveControllerPort = 0;
 
   /////////// Device IDs ////////////
   public static int kDriveLeftMasterID = 5;

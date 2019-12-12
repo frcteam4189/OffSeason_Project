@@ -59,7 +59,6 @@ public class TurnToAngle extends Command {
   }
 
   public void outputIntel(){
-    System.out.print("Hello");
     SmartDashboard.putBoolean("Running PID?", isFinished);
     SmartDashboard.putData("Turn To Angle", new TurnToAngle(90));
   }

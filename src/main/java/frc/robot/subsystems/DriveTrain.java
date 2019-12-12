@@ -36,20 +36,11 @@ public class DriveTrain extends Subsystem implements PIDOutput{
   public EncoderFollower leftEncoderFollower;
   public final AHRS ahrs;
   public Notifier followerNotifier;
-  public DifferentialDrive chasisDrive;
+  public DifferentialDrive differentialDrive;
   public SpeedControllerGroup driveLeftGroup;
   public SpeedControllerGroup driveRightGroup;
   
   public final PIDController turnController;
-  
-  // DriveState state = DriveState.TELE_DRIVE;
-  // public enum DriveState{
-  //   TELE_DRIVE,
-  //   PATH_FOLLOWING,
-  //   STOPPED,
-  //   TURNING,
-  //   AUTON_DRIVE
-  // }
 
   public DriveTrain(){
     driveLeftMaster = new WPI_TalonSRX(Constants.kDriveLeftMasterID);
@@ -61,9 +52,6 @@ public class DriveTrain extends Subsystem implements PIDOutput{
     Robot.initTalon(driveRightMaster);
     Robot.initTalon(driveLeftSlave);
     Robot.initTalon(driveRightslave);
-    
-    // leftFollower.follow(leftMaster);
-    // rightFollower.follow(rightMaster);
 
     leftEncoder = new Encoder(Constants.kLeftEncoderPortA, Constants.kLeftEncoderPortB);
     rightEncoder = new Encoder(Constants.kRightEncoderPortA, Constants.kRightEncoderPortB);
@@ -77,7 +65,7 @@ public class DriveTrain extends Subsystem implements PIDOutput{
     turnController.setOutputRange(-.9, .9);
     turnController.setAbsoluteTolerance(0.25f);
     turnController.setContinuous();
-    chasisDrive = new DifferentialDrive(driveLeftGroup, driveRightGroup);
+    differentialDrive = new DifferentialDrive(driveLeftGroup, driveRightGroup);
   }  
 
   public void rotateDegrees(double angle){
@@ -90,7 +78,7 @@ public class DriveTrain extends Subsystem implements PIDOutput{
   
   
   public void setSpeed(double leftSpeed, double rightSpeed){
-    chasisDrive.tankDrive(leftSpeed, rightSpeed);
+    differentialDrive.tankDrive(leftSpeed, rightSpeed);
 
   }
   public void outputIntel() {
