@@ -8,47 +8,36 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Elevator;
 
-public class TurnToAngle extends Command {
-  private DriveTrain driveTrain;
-  private double angle;
-  boolean isFinished = false;
-  boolean inErrorZone = false;
-  public int count;
+public class MoveToSetpoint extends Command {
+  private Elevator elevator;
+  private ElevatorState level;
 
-  public TurnToAngle(DriveTrain driveTrain, double angle) {
-    this.driveTrain = driveTrain;
-    this.angle = angle;
-    requires(this.driveTrain);
+  public MoveToSetpoint(Elevator elevator, ElevatorState level) {
+    this.elevator = elevator;
+    this.level = level;
+    requires(this.elevator);
   }
 
   @Override
   protected void initialize() {
-    driveTrain.rotateDegrees(angle);
   }
 
   @Override
   protected void execute() {
-    double error = driveTrain.getTurnControllerError();
-    inErrorZone = Math.abs(error) < 2.5;
-    if(inErrorZone){
-      count++;
-      isFinished = count >= 10;
-    }
-    else{
-      count = 0;
-    }
+    int setpoint = elevator.getSetpoint(level);
+    elevator.setMotionMagicPosition(setpoint);
   }
 
   @Override
   protected boolean isFinished() {
-    return isFinished;
+      return elevator.isMotionMagicDone();
   }
 
   @Override
   protected void end() {
-    driveTrain.disableTurnController();
+    elevator.stop();
   }
 
   @Override

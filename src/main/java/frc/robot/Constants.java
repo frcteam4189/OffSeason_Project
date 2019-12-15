@@ -14,10 +14,11 @@ public class Constants {
   public static int kDriveControllerPort = 0;
 
   /////////// Device IDs ////////////
-  public static int kDriveLeftMasterID = 5;
-  public static int kDriveLeftSlaveID = 3;
-  public static int kDriveRightMasterID = 4;
-  public static int kDriveRightSlaveID = 1;
+  public static int kLeftDriveMasterID = 5;
+  public static int kLeftDriveSlaveID = 3;
+  public static int kRightDriveMasterID = 4;
+  public static int kRightDriveSlaveID = 1;
+  public static int kElevatorID = 2;
 
   /////////// Data ////////////
   public static int kLeftEncoderPortA = 0;
@@ -32,9 +33,24 @@ public class Constants {
   public static final String kPathName = "CargoFront";
 
   /////////// Buttons ////////////
-  public static int kTurnToAngle = 1;
+  public static final int kTurnToAngle = 1;
+  public static final int kZeroElevator = 2;
+  public static final int kLevel1Elevator = 3;
+  public static final int kLevel2Elevator = 4;
+  public static final int kLevel3Elevator = 5;
 
-  /////////// Subsystem ////////////
+  /////////// DriveTrain ////////////
+  public static final int kTurnDegrees = 90;
 
+  /////////// Elevator ////////////
+  public static final int kSlotIdx = 0;
+	public static final int kPIDLoopIdx = 0;
+  public static final int kTimeoutMs = 30;
+  public static final int kCruiseVelocity = 1500;
+  public static final int kAcceleration = 3000;
+  public static final Gains kGains = new Gains(0.2, 0.0, 0.0, 0.2, 0, 1.0);
+  public static final int kLevel1 = 4000;
+  public static final int kLevel2 = 10000;
+  public static final int kLevel3 = 16000;
   
 }

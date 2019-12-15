@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveWithJoySticks;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Elevator;
 
 
 /**
@@ -27,8 +27,10 @@ import frc.robot.subsystems.DriveTrain;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static DriveTrain driveTrain = new DriveTrain();
-  public static OI oi;
+  private static DriveTrain driveTrain;
+  private static Elevator elevator;
+  private static OI oi;
+  private static DriveWithJoySticks driveWithJoySticks;
   
 
   Command m_autonomousCommand;
@@ -40,12 +42,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    oi = new OI();
-    m_chooser.setDefaultOption("Default Auto", new DriveWithJoySticks());
-    // chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
-    driveTrain.outputIntel();
-    driveTrain.ahrs.reset();
+    driveTrain = new DriveTrain();
+    elevator = new Elevator();
+    oi = new OI(driveTrain, elevator);
+    driveTrain.outputTelemetry();
+    elevator.outputTelemetry();
+    driveTrain.resetGyro();
+    driveWithJoySticks = new DriveWithJoySticks(driveTrain, oi.driveController);
+    driveTrain.establishDefaultCommand(driveWithJoySticks);
   }
 
   /**
@@ -58,7 +62,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    driveTrain.outputIntel();
+    driveTrain.outputTelemetry();
+    elevator.outputTelemetry();
   }
 
   /**
@@ -120,7 +125,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    driveTrain.outputIntel(); 
+    driveTrain.outputTelemetry();
+    elevator.outputTelemetry(); 
     
   }
 
@@ -130,7 +136,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    driveTrain.outputIntel();
+    driveTrain.outputTelemetry();
+    elevator.outputTelemetry();
     
   }
 
@@ -141,12 +148,13 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
   }
 
-  public static void initTalon(WPI_TalonSRX motor){
-    motor.setNeutralMode(NeutralMode.Brake);
-    motor.neutralOutput();
-    motor.setSensorPhase(false);
-    motor.configNominalOutputForward(0.0);
-    motor.configNominalOutputReverse(0.0);
-    motor.configClosedloopRamp(.5);
+  public static void initTalon(WPI_TalonSRX talonSRX){
+    talonSRX.configFactoryDefault();
+    talonSRX.setNeutralMode(NeutralMode.Brake);
+    talonSRX.neutralOutput();
+    talonSRX.setSensorPhase(false);
+    talonSRX.configNominalOutputForward(0.0);
+    talonSRX.configNominalOutputReverse(0.0);
+    talonSRX.configClosedloopRamp(.5);
   }
 }

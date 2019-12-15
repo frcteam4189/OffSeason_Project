@@ -7,15 +7,23 @@
 
 package frc.robot.commands;
 
-
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
-
+import frc.robot.subsystems.DriveTrain;
 
 public class DriveWithJoySticks extends Command {
-  public DriveWithJoySticks() {
-    requires(Robot.driveTrain);
+  private DriveTrain driveTrain;
+  // private Joystick leftStick;
+  // private Joystick rightStick;
+  private XboxController driveController;
+  public DriveWithJoySticks(DriveTrain driveTrain, XboxController driveController) {
+    this.driveTrain = driveTrain;
+    this.driveController = driveController;
+    // this.leftStick = leftStick;
+    // this.rightStick = rightStick;
+
+    requires(this.driveTrain);
   }
 
   @Override
@@ -24,12 +32,12 @@ public class DriveWithJoySticks extends Command {
 
   @Override
   protected void execute() {
-    double left = Robot.oi.leftStick.getY();
-    double right = Robot.oi.rightStick.getY();
-    Robot.driveTrain.setSpeed(left, right);
-    // double yAxis = Robot.oi.driveController.getY(Hand.kLeft);
-    // double xAxis = Robot.oi.driveController.getX(Hand.kRight);
-    // Robot.driveTrain.setSpeed(yAxis, xAxis);
+    // double left = leftStick.getY();
+    // double right = rightStick.getY();
+    // driveTrain.setSpeed(left, right);
+    double yAxis = driveController.getY(Hand.kLeft);
+    double xAxis = driveController.getX(Hand.kRight);
+    driveTrain.setSpeed(yAxis, xAxis);
   }
 
   @Override

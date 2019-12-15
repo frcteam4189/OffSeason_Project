@@ -13,87 +13,105 @@ import com.kauailabs.navx.frc.AHRS;
 import frc.robot.Constants;
 import frc.robot.Gains;
 import frc.robot.Robot;
-import frc.robot.commands.DriveWithJoySticks;
-import jaci.pathfinder.followers.EncoderFollower;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Notifier;
+import frc.robot.commands.TurnToAngle;
+// import jaci.pathfinder.followers.EncoderFollower;
+// import edu.wpi.first.wpilibj.Encoder;
+// import edu.wpi.first.wpilibj.Joystick;
+// import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class DriveTrain extends Subsystem implements PIDOutput{
-  public WPI_TalonSRX driveLeftMaster;
-  public WPI_TalonSRX driveRightMaster;
-  public WPI_TalonSRX driveLeftSlave;
-  public WPI_TalonSRX driveRightslave;
-  public Encoder rightEncoder;
-  public Encoder leftEncoder;
-  public EncoderFollower rightEncoderFollower;
-  public EncoderFollower leftEncoderFollower;
-  public final AHRS ahrs;
-  public Notifier followerNotifier;
-  public DifferentialDrive differentialDrive;
-  public SpeedControllerGroup driveLeftGroup;
-  public SpeedControllerGroup driveRightGroup;
-  
-  public final PIDController turnController;
+public class DriveTrain extends MainSubsystem implements PIDOutput{
+  private WPI_TalonSRX leftDriveMaster;
+  private WPI_TalonSRX rightDriveMaster;
+  private WPI_TalonSRX leftDriveSlave;
+  private WPI_TalonSRX rightDriveslave;
+  //private Encoder rightEncoder;
+  //private Encoder leftEncoder;
+  //private EncoderFollower rightEncoderFollower;
+  //private EncoderFollower leftEncoderFollower;
+  private final AHRS navx;
+  //private Notifier followerNotifier;
+  private DifferentialDrive differentialDrive;
+  private SpeedControllerGroup leftDriveGroup;
+  private SpeedControllerGroup rightDriveGroup;
+  private Command defaultCommand;
+  private final PIDController turnController;
 
   public DriveTrain(){
-    driveLeftMaster = new WPI_TalonSRX(Constants.kDriveLeftMasterID);
-    driveRightMaster = new WPI_TalonSRX(Constants.kDriveRightMasterID);
-    driveLeftSlave = new WPI_TalonSRX(Constants.kDriveLeftSlaveID);
-    driveRightslave = new WPI_TalonSRX(Constants.kDriveRightSlaveID);
+    leftDriveMaster = new WPI_TalonSRX(Constants.kLeftDriveMasterID);
+    rightDriveMaster = new WPI_TalonSRX(Constants.kRightDriveMasterID);
+    leftDriveSlave = new WPI_TalonSRX(Constants.kLeftDriveSlaveID);
+    rightDriveslave = new WPI_TalonSRX(Constants.kRightDriveSlaveID);
 
-    Robot.initTalon(driveLeftMaster);
-    Robot.initTalon(driveRightMaster);
-    Robot.initTalon(driveLeftSlave);
-    Robot.initTalon(driveRightslave);
+    Robot.initTalon(leftDriveMaster);
+    Robot.initTalon(rightDriveMaster);
+    Robot.initTalon(leftDriveSlave);
+    Robot.initTalon(rightDriveslave);
 
-    leftEncoder = new Encoder(Constants.kLeftEncoderPortA, Constants.kLeftEncoderPortB);
-    rightEncoder = new Encoder(Constants.kRightEncoderPortA, Constants.kRightEncoderPortB);
-    ahrs = new AHRS(SPI.Port.kMXP);
+    //leftEncoder = new Encoder(Constants.kLeftEncoderPortA, Constants.kLeftEncoderPortB);
+    //rightEncoder = new Encoder(Constants.kRightEncoderPortA, Constants.kRightEncoderPortB);
+    navx = new AHRS(SPI.Port.kMXP);
 
-    driveLeftGroup = new SpeedControllerGroup(driveLeftMaster, driveLeftSlave);
-    driveRightGroup = new SpeedControllerGroup(driveRightMaster, driveRightslave);
+    leftDriveGroup = new SpeedControllerGroup(leftDriveMaster, leftDriveSlave);
+    rightDriveGroup = new SpeedControllerGroup(rightDriveMaster, rightDriveslave);
 
-    turnController = new PIDController(Gains.kP, Gains.kI, Gains.kD, ahrs, this);
+    turnController = new PIDController(Gains.kPTurn, Gains.kITurn, Gains.kDTurn, navx, this);
     turnController.setInputRange(-180.0f, 180.0f);
     turnController.setOutputRange(-.9, .9);
     turnController.setAbsoluteTolerance(0.25f);
     turnController.setContinuous();
-    differentialDrive = new DifferentialDrive(driveLeftGroup, driveRightGroup);
+    differentialDrive = new DifferentialDrive(leftDriveGroup, rightDriveGroup);
   }  
 
   public void rotateDegrees(double angle){
-    ahrs.reset();
+    navx.reset();
     turnController.reset();
-    turnController.setPID(Gains.kP, Gains.kI, Gains.kD);
+    turnController.setPID(Gains.kPTurn, Gains.kITurn, Gains.kDTurn);
     turnController.setSetpoint(angle);
     turnController.enable();
   }
   
+  public void setSpeed(double move, double turn){
+    differentialDrive.arcadeDrive(move, turn);
+  }
+
+  public void resetGyro(){
+    navx.reset();
+  }
+
+  public void disableTurnController(){
+    turnController.disable();
+  }
+
+  public double getTurnControllerError(){
+    return turnController.getError();
+  }
   
-  public void setSpeed(double leftSpeed, double rightSpeed){
-    differentialDrive.tankDrive(leftSpeed, rightSpeed);
-
-  }
-  public void outputIntel() {
-    SmartDashboard.putNumber("Gyro Angle", ahrs.getAngle());
-    SmartDashboard.putString("Drive Train", Robot.driveTrain.getSubsystem());
-    SmartDashboard.putNumber("Accel Z", ahrs.getRawAccelZ());
+  public void outputTelemetry() {
+    SmartDashboard.putNumber("Gyro Angle", navx.getAngle());
+    SmartDashboard.putString("Drive Train", this.getSubsystem());
+    SmartDashboard.putNumber("Accel Z", navx.getRawAccelZ());
+    SmartDashboard.putData("Turn To Angle", new TurnToAngle(this, Constants.kTurnDegrees));
+    SmartDashboard.putData("PID COntroller", turnController);
   }
 
+  public void establishDefaultCommand(Command command) {
+    this.defaultCommand = command;
+    initDefaultCommand();
+  }
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new DriveWithJoySticks());
+    setDefaultCommand(this.defaultCommand);
   }
 
   @Override
   public void pidWrite(double output) {
-    setSpeed(-output, output);
+    setSpeed(0, output);
   }
 }
