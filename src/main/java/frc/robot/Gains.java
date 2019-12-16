@@ -13,7 +13,8 @@ public class Gains {
     public static double kDTurn = -0.17;
     // public static double kP = -0.1;
     // public static double kI = 0.0;
-    // public static double kD = -0.19;
+	// public static double kD = -0.19;
+	
     public final double kP;
 	public final double kI;
 	public final double kD;

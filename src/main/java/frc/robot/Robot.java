@@ -155,6 +155,6 @@ public class Robot extends TimedRobot {
     talonSRX.setSensorPhase(false);
     talonSRX.configNominalOutputForward(0.0);
     talonSRX.configNominalOutputReverse(0.0);
-    talonSRX.configClosedloopRamp(.5);
+    talonSRX.configClosedloopRamp(10);
   }
 }

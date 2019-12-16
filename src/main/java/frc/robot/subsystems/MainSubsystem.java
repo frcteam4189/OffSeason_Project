@@ -9,19 +9,13 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-/**
- * Add your docs here.
- */
 public abstract class MainSubsystem extends Subsystem {
-  //public abstract void outputTelemetry();
+  public abstract void outputTelemetry();
   
   public void establishDefaultCommand(){
-
   }
 
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
   }
 }

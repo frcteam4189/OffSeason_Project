@@ -63,7 +63,7 @@ public class DriveTrain extends MainSubsystem implements PIDOutput{
 
     turnController = new PIDController(Gains.kPTurn, Gains.kITurn, Gains.kDTurn, navx, this);
     turnController.setInputRange(-180.0f, 180.0f);
-    turnController.setOutputRange(-.9, .9);
+    turnController.setOutputRange(-.6, .6);
     turnController.setAbsoluteTolerance(0.25f);
     turnController.setContinuous();
     differentialDrive = new DifferentialDrive(leftDriveGroup, rightDriveGroup);
