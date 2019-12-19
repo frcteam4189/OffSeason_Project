@@ -8,9 +8,9 @@
 package frc.robot;
 
 public class Gains {
-    public static double kPTurn = -0.095;
-    public static double kITurn = 0.0;
-    public static double kDTurn = -0.17;
+	public static double kPTurn = 0.08;
+    public static double kITurn = 0.0000000;
+    public static double kDTurn = 0.088150959;
     // public static double kP = -0.1;
     // public static double kI = 0.0;
 	// public static double kD = -0.19;

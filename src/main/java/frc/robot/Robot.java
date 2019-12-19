@@ -148,13 +148,13 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
   }
 
-  public static void initTalon(WPI_TalonSRX talonSRX){
+  public static void initTalonSRX(WPI_TalonSRX talonSRX){
     talonSRX.configFactoryDefault();
     talonSRX.setNeutralMode(NeutralMode.Brake);
     talonSRX.neutralOutput();
     talonSRX.setSensorPhase(false);
     talonSRX.configNominalOutputForward(0.0);
     talonSRX.configNominalOutputReverse(0.0);
-    talonSRX.configClosedloopRamp(10);
+    talonSRX.configClosedloopRamp(3);
   }
 }

@@ -37,7 +37,7 @@ public class DriveWithJoySticks extends Command {
     // driveTrain.setSpeed(left, right);
     double yAxis = driveController.getY(Hand.kLeft);
     double xAxis = driveController.getX(Hand.kRight);
-    driveTrain.setSpeed(yAxis, xAxis);
+    driveTrain.setSpeed(yAxis * .6, xAxis * .3);
   }
 
   @Override

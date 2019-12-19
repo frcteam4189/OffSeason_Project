@@ -14,10 +14,10 @@ public class Constants {
   public static int kDriveControllerPort = 0;
 
   /////////// Device IDs ////////////
-  public static int kLeftDriveMasterID = 5;
-  public static int kLeftDriveSlaveID = 3;
-  public static int kRightDriveMasterID = 4;
-  public static int kRightDriveSlaveID = 1;
+  public static int kLeftDriveMasterID = 1;
+  public static int kLeftDriveSlaveID = 4;
+  public static int kRightDriveMasterID = 2;
+  public static int kRightDriveSlaveID = 3;
   public static int kElevatorID = 2;
 
   /////////// Data ////////////
@@ -40,7 +40,7 @@ public class Constants {
   public static final int kLevel3Elevator = 5;
 
   /////////// DriveTrain ////////////
-  public static final int kTurnDegrees = 90;
+  public static final int kTurnDegrees = 180;
 
   /////////// Elevator ////////////
   public static final int kSlotIdx = 0;

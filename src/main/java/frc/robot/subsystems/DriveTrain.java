@@ -8,12 +8,12 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 import frc.robot.Constants;
 import frc.robot.Gains;
 import frc.robot.Robot;
-import frc.robot.commands.TurnToAngle;
 // import jaci.pathfinder.followers.EncoderFollower;
 // import edu.wpi.first.wpilibj.Encoder;
 // import edu.wpi.first.wpilibj.Joystick;
@@ -29,8 +29,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveTrain extends MainSubsystem implements PIDOutput{
   private WPI_TalonSRX leftDriveMaster;
   private WPI_TalonSRX rightDriveMaster;
-  private WPI_TalonSRX leftDriveSlave;
-  private WPI_TalonSRX rightDriveslave;
+  private WPI_VictorSPX leftDriveSlave;
+  private WPI_VictorSPX rightDriveslave;
   //private Encoder rightEncoder;
   //private Encoder leftEncoder;
   //private EncoderFollower rightEncoderFollower;
@@ -46,13 +46,13 @@ public class DriveTrain extends MainSubsystem implements PIDOutput{
   public DriveTrain(){
     leftDriveMaster = new WPI_TalonSRX(Constants.kLeftDriveMasterID);
     rightDriveMaster = new WPI_TalonSRX(Constants.kRightDriveMasterID);
-    leftDriveSlave = new WPI_TalonSRX(Constants.kLeftDriveSlaveID);
-    rightDriveslave = new WPI_TalonSRX(Constants.kRightDriveSlaveID);
+    leftDriveSlave = new WPI_VictorSPX(Constants.kLeftDriveSlaveID);
+    rightDriveslave = new WPI_VictorSPX(Constants.kRightDriveSlaveID);
 
-    Robot.initTalon(leftDriveMaster);
-    Robot.initTalon(rightDriveMaster);
-    Robot.initTalon(leftDriveSlave);
-    Robot.initTalon(rightDriveslave);
+    Robot.initTalonSRX(leftDriveMaster);
+    Robot.initTalonSRX(rightDriveMaster);
+    leftDriveSlave.follow(leftDriveMaster);
+    rightDriveslave.follow(rightDriveMaster);
 
     //leftEncoder = new Encoder(Constants.kLeftEncoderPortA, Constants.kLeftEncoderPortB);
     //rightEncoder = new Encoder(Constants.kRightEncoderPortA, Constants.kRightEncoderPortB);
@@ -63,10 +63,11 @@ public class DriveTrain extends MainSubsystem implements PIDOutput{
 
     turnController = new PIDController(Gains.kPTurn, Gains.kITurn, Gains.kDTurn, navx, this);
     turnController.setInputRange(-180.0f, 180.0f);
-    turnController.setOutputRange(-.6, .6);
-    turnController.setAbsoluteTolerance(0.25f);
+    turnController.setOutputRange(-.7, .7);
+    turnController.setAbsoluteTolerance(0.5f);
     turnController.setContinuous();
-    differentialDrive = new DifferentialDrive(leftDriveGroup, rightDriveGroup);
+    differentialDrive = new DifferentialDrive(leftDriveMaster, rightDriveMaster);
+    differentialDrive.setDeadband(.1);
   }  
 
   public void rotateDegrees(double angle){
@@ -95,10 +96,7 @@ public class DriveTrain extends MainSubsystem implements PIDOutput{
   
   public void outputTelemetry() {
     SmartDashboard.putNumber("Gyro Angle", navx.getAngle());
-    SmartDashboard.putString("Drive Train", this.getSubsystem());
     SmartDashboard.putNumber("Accel Z", navx.getRawAccelZ());
-    SmartDashboard.putData("Turn To Angle", new TurnToAngle(this, Constants.kTurnDegrees));
-    SmartDashboard.putData("PID COntroller", turnController);
   }
 
   public void establishDefaultCommand(Command command) {

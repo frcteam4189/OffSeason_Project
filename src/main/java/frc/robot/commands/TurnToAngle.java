@@ -48,7 +48,6 @@ public class TurnToAngle extends Command {
 
   @Override
   protected void end() {
-    driveTrain.resetGyro();
     driveTrain.disableTurnController();
   }
 
